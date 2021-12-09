@@ -1,0 +1,7 @@
+{
+  "name": "notificationPushSkeleton",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,6 @@
+{
+	"appId": "com.notificationppushskeleton.app",
+	"appName": "notificationPushSkeleton",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
