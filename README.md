@@ -1,2 +1,2 @@
 # pushNotificationsSkeleton
-POC - Push Notifications with Firebase
+POC - Push Notifications with Firebase, Capacitor, Angular
