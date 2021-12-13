@@ -2,51 +2,49 @@
 
 <strong>¡Hi world!</strong> This it's a simple mobile application built with Ionic and Capacitor to demonstrate how to register for and receive "push-notifications" on Android/iOS. 
 
-## 💻 Requerimientos
+## 💻 Requirements
 
 <ul>
-  <li>NPM (versión node: v14.18.2)</li>
-  <li>Android Studio</li>
-  <li>XCode</li>
-  <li>Account Firebase</li>
+  <li>NPM</li>
+  <li>Android Studio & SDK Manager API +30</li>
+  <li>Firebase: Create account and project</li>
 </ul>  
 
-## 👨 Installation
+## ⚙Installation
 
-### NPM
 
-Instalar Ionic & Angular:
+## Install Ionic & Angular:
 ```
 npm install -g @ionic/cli
 npm install -g @angular/cli@11.2.7
 ```
 
-Instalar las dependencias del proyecto:
+## Install dependencies:
 
 ```
 npm install
 ```
 
-Debe crear el código y los activos de su aplicación para copiarlos en plataformas individuales (Android e iOS). Para compilar el código y los activos, ejecute:
+Compile code to later copy them to platforms (Android / iOS):
 ```
 ionic build
 ```
 
-Añadir plataforma android (código de compilación nativo)
+Create android platform (Native compilation code)
 ```
 npx cap add android
 ```
 
-## Create account firebase
-Create account firebase y generate json for connect with your app (android & ios)
+
+## Android Push Preparation
+
+1. Create account firebase:
+
+Create account firebase & generate json for connect with your app (android / ios)
 Add your `google-services.json` in `android/app/`.
 
 
-## Android manual Installation
-
-**NOTE: 
-
-Añade las siguientes dependencias en build.gradle:
+2. Add in build.gradle:
 
 In your `android/app/build.gradle`
 
@@ -82,24 +80,31 @@ In your `android/build.gradle`
  }
 ```
 
-Copiar todos los cambios a una plataforma android
+
+3. Copy all changes to an android platform
 ```
 npx cap sync
 ```
-Y si desea copiar código hibrido:
-```
-npx cap copy
-```
 
-Para crear la aplicación desde Android Studio, abra el editor usando:
+4. Open android project:
 ```
 npx cap open <android or ios>
 ```
 
-**NOTE: 
-Como es una app en blanco, si te da error instala esto:
-npm install com-darryncampbell-cordova-plugin-intent
-npm install @ionic-native/web-intent
+5.Finally `Sync project with gradle files` > Android studio and RUN App.
+
+
+** Note:
+
+In `angular` the code for `register and receive push notifaction` is in `src>app>home>home.page.ts`.
+
+
+
+
+
+
+
+
+
 
   
-👨🏾‍💻<span>Proyecto realizado por Niel Torres<span>
