@@ -30,6 +30,5 @@ npm-debug.log*
 /plugins
 /www
 /android
-./android
-./node_modules
+/Program
 

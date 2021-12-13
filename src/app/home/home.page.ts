@@ -13,10 +13,10 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit(){
-    this.activateListenersForPushNotifications();
+    this.addListenersForPushNotifications();
   }
 
-  activateListenersForPushNotifications() {
+  addListenersForPushNotifications() {
         // On success, we should be able to receive notifications
         PushNotifications.addListener('registration',
         (token: Token) => {
@@ -46,10 +46,9 @@ export class HomePage implements OnInit {
       );
   }
   
-  requestPermissions(){
+  requestPermissionsForNotifications(){
     if(this.platform.is('capacitor')){
       PushNotifications.requestPermissions().then(result => {
-        console.log("PushNotifications.requestPermissions()");
         if (result.receive === 'granted') {
           // Register with Apple / Google to receive push via APNS/FCM
           PushNotifications.register();
@@ -60,7 +59,6 @@ export class HomePage implements OnInit {
     } else {
         console.log("PushNotifications.requestPermissions() -> Its a not device mobile")
     }
-    
   }
 
 }
