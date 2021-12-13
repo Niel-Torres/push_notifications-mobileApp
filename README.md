@@ -43,6 +43,20 @@ npx cap add android
 Create account firebase & generate json for connect with your app (android / ios)
 Add your `google-services.json` in `android/app/`.
 
+- Create project:
+<img src="https://user-images.githubusercontent.com/15156545/145823183-504cc197-ccff-4132-a9f7-0616ec241b80.png" width="500">
+
+- Add Firebase to Android:
+<img src="https://user-images.githubusercontent.com/15156545/145824986-aee28fca-fe1f-45dc-aa17-97c5c4ac13bd.png" width="500">
+
+- It's very important that your `android package name` is equal to `appId` of the capacitor file of your project: `capacitor.config.json`.
+<img src="https://user-images.githubusercontent.com/15156545/145826094-2c830010-fa6a-48c0-a79e-4722e3227c6b.png" width="500">
+
+<img src="https://user-images.githubusercontent.com/15156545/145825215-fe97327f-ffc6-4ac4-b89b-42af97915e95.png" width="500">
+
+- Download your `google-services.json` and add in your project in `android/app/`
+<img src="https://user-images.githubusercontent.com/15156545/145827072-9644fafe-f80a-4961-818d-94186ceca0a7.png" width="500">
+
 
 2. Add in build.gradle:
 
@@ -88,13 +102,17 @@ npx cap sync
 
 4. Open android project:
 ```
-npx cap open <android or ios>
+npx cap open android
 ```
 
 5.Finally `Sync project with gradle files` > Android studio and RUN App.
 
 
-** Note:
+That it's all...
+
+
+
+** Additional note (summary of push notifications code in angular) :
 
 In `angular` the code for `register and receive push notifaction` is in `src>app>home>home.page.ts`.
 
