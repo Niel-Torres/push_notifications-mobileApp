@@ -100,12 +100,57 @@ In `angular` the code for `register and receive push notifaction` is in `src>app
 
 - 4 events that are listening when a device is registered or a push notification is sent.
 
-- 1 function to "register device & generate token" => requestPermissions().
+```typescript
+    // On success, we should be able to receive notifications
+      PushNotifications.addListener('registration',
+      (token: Token) => {
+          alert('Push registration success, token: ' + token.value);
+        }
+      );
+  
+      // Some issue with our setup and push will not work
+      PushNotifications.addListener('registrationError',
+        (error: any) => {
+          alert('Error on registration: ' + JSON.stringify(error));
+        }
+      );
+  
+      // Show us the notification payload if the app is open on our device
+      PushNotifications.addListener('pushNotificationReceived',
+        (notification: PushNotificationSchema) => {
+          alert('Push received: ' + JSON.stringify(notification));
+        }
+      );
+  
+      // Method called when tapping on a notification
+      PushNotifications.addListener('pushNotificationActionPerformed',
+        (notification: ActionPerformed) => {
+          alert('Push action performed: ' + JSON.stringify(notification));
+        }
+      );
+```
 
+- 1 function to "request permissions & register device with token". (On Android it doesn't prompt for permission because you can always receive push notifications, but on iOS it depends on the user's selection.
 
+```typescript
+ requestPermissions(){
+    if(this.platform.is('capacitor')){
+      PushNotifications.requestPermissions().then(result => {
+        console.log("PushNotifications.requestPermissions()");
+        if (result.receive === 'granted') {
+          // Register with Apple / Google to receive push via APNS/FCM
+          PushNotifications.register();
+        } else {
+          // Show some error
+        }
+      });
+    } else {
+        console.log("PushNotifications.requestPermissions() -> Its a not device mobile")
+    }
+    
+  }
 
-
-
+```
 
 
   
