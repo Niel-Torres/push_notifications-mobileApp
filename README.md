@@ -98,8 +98,9 @@ npx cap open <android or ios>
 
 In `angular` the code for `register and receive push notifaction` is in `src>app>home>home.page.ts`.
 
--> 4 events that are listening when a device is registered or a push notification is sent.
--> 1 function to "register device & generate token" => requestPermissions().
+- 4 events that are listening when a device is registered or a push notification is sent.
+
+- 1 function to "register device & generate token" => requestPermissions().
 
 
 
