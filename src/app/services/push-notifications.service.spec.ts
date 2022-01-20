@@ -1,37 +1,13 @@
-import { ActionPerformed, PushNotificationSchema, PushNotifications, Token, PermissionStatus, PushNotificationsPlugin, DeliveredNotifications, ListChannelsResult } from '@capacitor/push-notifications';
-import { TestBed, inject } from '@angular/core/testing';
-import { Platform } from '@ionic/angular';
+import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { PushNotificationsService } from './push-notifications.service';
-import type { PermissionState, PluginListenerHandle } from '@capacitor/core';
 import { Capacitor } from '@capacitor/core';
-
-
 
 describe('(3) Test of PushNotificationsService', () => {
   
   let service: PushNotificationsService;
-  let pushNotificationMock: typeof PushNotifications;
-  let remove;
 
-  beforeEach(() => {
-
-    //spyPlatform = jasmine.createSpyObj('Platform', ['is']);   
-
-    pushNotificationMock = jasmine.createSpyObj('PushNotifications', 
-      {
-        register: (()=> Promise.resolve()),
-        getDeliveredNotifications: () => new Promise<DeliveredNotifications>(()=>{}),
-        removeDeliveredNotifications: (()=> {}),
-        removeAllDeliveredNotifications: (()=>{}),
-        createChannel: (()=> Promise.resolve()),
-        deleteChannel: (()=> Promise.resolve()),
-        listChannels: () => new Promise<ListChannelsResult>(()=>{}),
-        checkPermissions: () => new Promise<PermissionStatus>(()=>{}),
-        requestPermissions: () => new Promise<any>(()=>{}),
-        addListener: () => (remove),
-        removeAllListeners:  (()=> Promise.resolve()),
-      }
-    )
+  beforeEach( () => {
 
     TestBed.configureTestingModule({
       providers: [
@@ -50,97 +26,96 @@ describe('(3) Test of PushNotificationsService', () => {
     const token = service.getToken();
     expect(service.getToken()).toBe('xZas-12345');
   });
+ 
+  describe('requestPermissions', () => {
+    beforeEach( () => {
+      spyOn(PushNotifications, 'requestPermissions');
+      (PushNotifications.requestPermissions as any)
+        .and.returnValue(Promise.resolve({receive: 'granted'}));
 
-  it('should check platform is web and do not initialize pushNotificationService', () => {
-    spyOn(service, 'registerPush');  
-    spyOn(Capacitor, 'getPlatform').and.returnValue('web');
-    service.registerPush();
-    expect(service.registerPush).not.toHaveBeenCalled();
-  })
-  
-  it('should check platform is web and initialize pushNotificationService', () => {
-    spyOn(service, 'registerPush');  
-    spyOn(Capacitor, 'getPlatform').and.returnValue('android');
-    service.registerPush();
-    expect(service.registerPush).toHaveBeenCalled();
-  })
+      service = TestBed.inject(PushNotificationsService); 
+    });
 
-  it('should check if exist a function for resetPushNotifications', () => {    
-    //spyOn(PushNotifications, 'removeAllDeliveredNotifications').and.returnValue(new Promise(() => Promise.resolve()))
-    //service.resetPushNotifications();
-    //expect(PushNotifications.removeAllDeliveredNotifications).toBeTruthy();
-
-    //spyOn(pushNotificationMock, 'removeAllDeliveredNotifications').and.returnValue(Promise.resolve());
-    service.resetPushNotifications();
-    expect(pushNotificationMock.removeAllDeliveredNotifications).toBeTruthy();
-  })
-
-  it('should be registerPush', () => {
-    service.registerPush();
-    expect(service.registerPush).toBeDefined();
-  });
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  it('buenas formas de hacer test', () => {
-   /* 
-   *UNA BUENA OPCION SI SE TRATA DE MOCKS
-
-   Antes necesitas lo siguiente:
-
-   1.antes del before:
-    // let spyPlatform: jasmine.SpyObj<Capacitor>;
-
-    2.en el before:
-       // spyPlatform = jasmine.createSpyObj('Platform', ['is']);                  
-
-
-    3.Y ya en el "it":
-
-    spyPlatform.is.and.returnValue(true);
-    spyOn(newservice, 'pruebaa');
-    newservice.testing();
-
-    // ----------------------
-   
-    expect(newservice.pruebaa).toHaveBeenCalled()
-  */
-
-    /*
-    OTRA BUENA OPCIN si se trata de plugins
-    spyOn(newservice, 'pruebaa');
-    spyOn(newservice, 'pruebab');
-   
-
-    spyOn(Capacitor, 'getPlatform').and.returnValue('web');
-    newservice.testing();
-  
-    expect(newservice.pruebab).toHaveBeenCalled();
-   
-    */
-
-
-  });
+    it('If the device is mobile -> should called requestPermission and resolve with status = granted', async()=> {
+      spyOn(Capacitor, 'getPlatform').and.returnValue('android');  
+      spyOn(PushNotifications, 'register')
+      await service.requestPermissions();
+      expect(PushNotifications.register).toHaveBeenCalledTimes(1);
+    });
 
     
-  
+    it('If the device is mobile -> should called requestPermission and resolve with status != granted', async ()=> {
+      spyOn(Capacitor, 'getPlatform').and.returnValue('android');  
+      spyOn(PushNotifications, 'register');
+      (PushNotifications.requestPermissions as any)
+      .and.returnValue(Promise.resolve({receive: 'denied'}));
+      await service.requestPermissions();
+      expect(PushNotifications.register).not.toHaveBeenCalled();
+    });
 
+    it('If the device is not mobile -> Do not should called requestPermission', async()=> {
+      spyOn(Capacitor, 'getPlatform').and.returnValue('web');  
+      await service.requestPermissions();
+      expect(PushNotifications.requestPermissions).not. toHaveBeenCalled();
+    });
+
+  });
+
+  describe('resetPushNotifications', () => {
+    beforeEach( () => {
+      spyOn(PushNotifications, 'removeAllDeliveredNotifications');
+      (PushNotifications.removeAllDeliveredNotifications)
+    });
+
+    it('should called removeAllDeliveredNotifications', async ()=> {
+      await service.resetPushNotifications();
+      expect(PushNotifications.removeAllDeliveredNotifications).toHaveBeenCalledTimes(1);
+    });
+  });
+
+describe('addListenersForNotifications', () => {
+
+    beforeEach( () => {
+      spyOn(PushNotifications, 'addListener');
+      (PushNotifications.addListener as any)
+      .and.returnValue(Promise.resolve());
+      service = TestBed.inject(PushNotificationsService); 
+    });
+
+    it('should called addListener', async()=> {
+      await service.addListenersForNotifications();
+      expect(PushNotifications.addListener).toHaveBeenCalled();
+    });
+
+    it('should be defined -> eventListener of registration', ()=> {
+      let token:Token= { value: 'qwe123zxc'};
+      spyOn(service, 'setToken');
+      service.registration(token);
+      expect(service.setToken).toHaveBeenCalled();
+      //spyOn(PushNotifications,'addListener').withArgs('registration', token)
+    });
+
+    it('should be defined -> eventListener of registrationError', ()=> {
+      let error:any= { data: 'Error on registration, the notifications will not work'};
+      spyOn(console, 'info').and.callThrough();
+      service.registrationError(error);
+      expect(console.info).toHaveBeenCalledTimes(1)
+    });
+
+    it('should be defined -> eventListener of pushNotificationReceived', ()=> {
+      let schema:PushNotificationSchema = { id: '123', data: 'Hello World!'};
+      spyOn(console, 'info');
+      service.pushNotificationReceived(schema);
+      expect(console.info).toHaveBeenCalledTimes(1);
+      //expect(console.info).toHaveBeenCalledWith("Push received: { id: '123', data: 'Hello World!'}");
+    });
+    
+    it('should be defined -> eventListener of pushNotificationActionPerformed', ()=> {
+      let schema:PushNotificationSchema = { id: '456', data: 'Hello World!'};
+      let action:ActionPerformed = { actionId: '567', notification: schema};
+      spyOn(console, 'info');
+      service.pushNotificationActionPerformed(action);
+      expect(console.info).toHaveBeenCalledTimes(1);
+    });
+  });
 });
