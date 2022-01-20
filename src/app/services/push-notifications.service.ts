@@ -51,8 +51,7 @@ export class PushNotificationsService {
   } 
   
 
-  registration(token: Token){
-    this.setToken(token.value);
+  registration(token: Token){ 
     console.info('PushNotification: Registration token: ' + JSON.stringify(token.value));
   }
 

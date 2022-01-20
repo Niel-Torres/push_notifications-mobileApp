@@ -89,9 +89,9 @@ describe('addListenersForNotifications', () => {
 
     it('should be defined -> eventListener of registration', ()=> {
       let token:Token= { value: 'qwe123zxc'};
-      spyOn(service, 'setToken');
+      spyOn(console, 'info')
       service.registration(token);
-      expect(service.setToken).toHaveBeenCalled();
+      expect(console.info).toHaveBeenCalledTimes(1)
       //spyOn(PushNotifications,'addListener').withArgs('registration', token)
     });
 
