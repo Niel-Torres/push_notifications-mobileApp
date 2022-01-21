@@ -2,29 +2,52 @@ import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } fro
 import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { PushNotificationsService } from './push-notifications.service';
 import { Capacitor } from '@capacitor/core';
+import { GlobalProvider } from '@app/providers/global.provider';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { of } from 'rxjs';
 
 describe('(3) Test of PushNotificationsService', () => {
   
   let service: PushNotificationsService;
+  let globalProvider: GlobalProvider;
+  let httpMock: HttpTestingController;
+  let httpClient: HttpClient;
 
   beforeEach( () => {
 
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       providers: [
-        PushNotificationsService 
+        PushNotificationsService
       ]
     });
+    httpClient = TestBed.inject(HttpClient);
     service = TestBed.inject(PushNotificationsService);
+    globalProvider = TestBed.inject(GlobalProvider);
   });
 
-  it('should be created', () => {
+  it('should be created Service PushNotifications', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should be Set/Get token', ()=> {
-    service.setToken('xZas-12345');
-    const token = service.getToken();
-    expect(service.getToken()).toBe('xZas-12345');
+  describe('Token PushNotification', () => {
+    beforeEach( () => {
+     
+    });
+
+    it('should be have a function for -> setToken & getToken', ()=> {
+      service.setToken('xZas-12345');
+      const token = service.getToken();
+      expect(service.getToken()).toBe('xZas-12345');
+    });
+  
+    it('should be have a function for -> saveToken', ()=> {
+      const response = {};
+      spyOn(globalProvider, 'saveClient').and.returnValue(of(response));
+      service.saveToken('/clientes/messages?param');
+      expect(globalProvider.saveClient).toHaveBeenCalled();
+    });
   });
  
   describe('requestPermissions', () => {

@@ -2,21 +2,25 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 import { PushNotificationsService } from '../services/push-notifications.service';
 import { HomePage } from './home.page';
+import { GlobalProvider } from '@app/providers/global.provider';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe(`(2) "HomePage"`, () => {
+xdescribe(`(2) "HomePage"`, () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
   let service: PushNotificationsService;
+  let globalProvider: GlobalProvider;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ HomePage ],
-      imports: [IonicModule.forRoot()]
+      imports: [IonicModule.forRoot(), RouterTestingModule, HttpClientTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePage);
     component = fixture.componentInstance;
-    service = new PushNotificationsService();
+    service = new PushNotificationsService(globalProvider);
     component = new HomePage(service);
     fixture.detectChanges();
   });

@@ -1,15 +1,23 @@
 import { Injectable } from '@angular/core';
 import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
+import { GlobalProvider } from '@app/providers/global.provider';
 
+/**
+ * @class
+ *  Service for initialize and connect with firebase for push notifications
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class PushNotificationsService {
 
   private token: string;
+  private user = {};
   
-  constructor() {}
+  constructor(
+    private globalProvider: GlobalProvider 
+  ) {}
 
   getToken(){
     return this.token;    
@@ -19,6 +27,24 @@ export class PushNotificationsService {
     this.token = token;
   }
 
+  /**
+   * 
+   * @param URL 
+   *  POST: Save token on backend. 
+   */
+  saveToken = (URL: string) => {
+    this.globalProvider
+      .saveClient(URL, this.user)
+      .subscribe(
+        (resp)=>{ console.log(resp) }
+      );
+  }
+
+  /**
+   * @description
+   *  checkplatform and request permission to user 
+   *  Permission for register device on firebase and generate a token
+   */
   requestPermissions = async () => {
     if (Capacitor.getPlatform()!='web') {
       let permissionStatus = await PushNotifications.requestPermissions();
