@@ -14,13 +14,13 @@ export class PushNotificationsService {
 
   private token: string;
   private user = {};
-  
+
   constructor(
-    private globalProvider: GlobalProvider 
+    private globalProvider: GlobalProvider
   ) {}
 
   getToken(){
-    return this.token;    
+    return this.token;
   }
 
   setToken(token: string){
@@ -28,34 +28,34 @@ export class PushNotificationsService {
   }
 
   /**
-   * 
-   * @param URL 
-   *  POST: Save token on backend. 
+   *
+   * @param url
+   *  POST: Save token on backend.
    */
-  saveToken = (URL: string) => {
+  saveToken = (url: string) => {
     this.globalProvider
-      .saveClient(URL, this.user)
+      .saveClient(url, this.user)
       .subscribe(
-        (resp)=>{ console.log(resp) }
+        (resp)=>{ console.log(resp);}
       );
-  }
+  };
 
   /**
    * @description
-   *  checkplatform and request permission to user 
+   *  checkplatform and request permission to user
    *  Permission for register device on firebase and generate a token
    */
   requestPermissions = async () => {
-    if (Capacitor.getPlatform()!='web') {
-      let permissionStatus = await PushNotifications.requestPermissions();
-      
+    if (Capacitor.getPlatform() !== 'web') {
+      const permissionStatus = await PushNotifications.requestPermissions();
+
       if(permissionStatus.receive === 'granted'){
-        await PushNotifications.register();  
+        await PushNotifications.register();
       }else{
         //TODO: Some function with the user who does not give permission
       }
-    }  
-  }
+    }
+  };
 
   addListenersForNotifications = async () => {
     // On success, Your device is registered to receive push notifications. We get a token
@@ -64,34 +64,33 @@ export class PushNotificationsService {
     // Some issue with your registration and the notifications will not work
     await PushNotifications.addListener('registrationError', this.registrationError);
 
-    
+
     // Show the notification if the app is open on your device
     await PushNotifications.addListener('pushNotificationReceived', this.pushNotificationReceived);
 
     // Method called when tapping on a notification on your device
-    await PushNotifications.addListener('pushNotificationActionPerformed',this.pushNotificationActionPerformed)
-  }
+    await PushNotifications.addListener('pushNotificationActionPerformed',this.pushNotificationActionPerformed);
+  };
 
-  resetPushNotifications = async() => {
+  resetPushNotifications = async () => {
     await PushNotifications.removeAllDeliveredNotifications();
-  } 
-  
+  };
 
-  registration(token: Token){ 
-    console.info('PushNotification: Registration token: ' + JSON.stringify(token.value));
+
+  registration(token: Token){
+    console.log('PushNotification: Registration token: ' + JSON.stringify(token.value));
   }
 
   registrationError(error: any){
-    console.info('Error on registration: ' + JSON.stringify(error)); 
+    console.log('Error on registration: ' + JSON.stringify(error));
   }
 
   pushNotificationReceived(notification: PushNotificationSchema){
-    console.info('Push received: ' + JSON.stringify(notification));
+    console.log('Push received: ' + JSON.stringify(notification));
   }
 
   pushNotificationActionPerformed(notification: ActionPerformed){
-    console.info('Push action performed: ' + JSON.stringify(notification));
+    console.log('Push action performed: ' + JSON.stringify(notification));
   }
-
 
 }
