@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
 import { GlobalProvider } from '@app/providers/global.provider';
+import { FCM } from "@capacitor-community/fcm";
 
 /**
  * @class
@@ -91,6 +92,14 @@ export class PushNotificationsService {
 
   pushNotificationActionPerformed(notification: ActionPerformed){
     console.log('Push action performed: ' + JSON.stringify(notification));
+  }
+  
+  createSubcriptionByTopic(topicValue: string) {
+    // set up Firebase Cloud Messaging topics
+    // now you can subscribe to a specific topic
+    FCM.subscribeTo({ topic: topicValue })
+      .then((resp) => alert(`subscribed to topic: `+ topicValue))
+      .catch((err) => console.log(err));
   }
 
 }

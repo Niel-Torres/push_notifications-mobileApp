@@ -8,7 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test -- --code-coverage",
-    "test:coverage" : "ng test -- --watch=true --code-coverage",
+    "test:coverage": "ng test -- --watch=true --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^11.2.8",
     "@angular/platform-browser-dynamic": "^11.2.8",
     "@angular/router": "^11.2.8",
+    "@capacitor-community/fcm": "^2.0.2",
     "@capacitor/android": "^3.3.2",
     "@capacitor/app": "1.0.6",
     "@capacitor/core": "3.3.2",

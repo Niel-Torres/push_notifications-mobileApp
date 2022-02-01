@@ -14,6 +14,21 @@
   </ion-header>
 
   <div id="container">
-    <ion-button (click)="generateToken()" color="primary">Generate token</ion-button>
+    <section>
+      <div slot="fixed">
+        <h1>Register device and generate token</h1>
+      </div>
+      <ion-button (click)="generateToken()" color="primary">Generate token</ion-button>
+    </section>
+    <section>
+      <div slot="fixed">
+        <h1>Subcription by token</h1>
+      </div>
+      <ion-item>
+        <ion-input type="text" #topicValue placeholder="Write here your topic for subscribe"></ion-input>
+        <ion-button (click)="generateTopicToNotifications(topicValue)" color="primary">Subscribe topic</ion-button>
+      </ion-item>    
+    </section>
   </div>
+
 </ion-content>
