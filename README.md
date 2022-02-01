@@ -170,5 +170,8 @@ In `angular` the code for `register and receive push notifaction` is in `src>app
 
 ```
 
+** skeleton project with functionalities:
+- Register and generate token for push notifications.
+- Subscribe by topics.
+<img src="https://user-images.githubusercontent.com/15156545/151973466-b755d2e6-80b2-4511-8b3c-e57862d2b62d.JPG" width="250">
 
-  
