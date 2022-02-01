@@ -9,20 +9,20 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Push Notifications</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="container">
     <section>
       <div slot="fixed">
-        <h1>Register device and generate token</h1>
+        <h3>Register device and generate token</h3>
       </div>
       <ion-button (click)="generateToken()" color="primary">Generate token</ion-button>
     </section>
     <section>
       <div slot="fixed">
-        <h1>Subcription by token</h1>
+        <h3>Subcription by token</h3>
       </div>
       <ion-item>
         <ion-input type="text" #topicValue placeholder="Write here your topic for subscribe"></ion-input>
